@@ -1,0 +1,30 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^1.0.3",
+    "next": "latest",
+    "@emotion/react": "^11.1.2",
+    "@emotion/styled": "^11.0.0",
+    "framer-motion": "3.10.6",
+    "next-auth": "^4.8.0",
+    "nextwarm": "^0.0.11",
+    "react": "18.1.0",
+    "react-dom": "18.1.0",
+    "twitter-v2": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "17.0.35",
+    "@types/react": "18.0.9",
+    "@types/react-dom": "18.0.5",
+    "@types/tailwindcss": "^3.0.11",
+    "autoprefixer": "^10.4.7",
+    "postcss": "^8.4.14",
+    "tailwindcss": "^3.1.2",
+    "typescript": "4.7.2"
+  }
+}
