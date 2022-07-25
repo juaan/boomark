@@ -12,6 +12,7 @@ import debounce from "lodash.debounce";
 import { signIn } from "next-auth/react";
 
 import LoginBtn from "@components/LoginBtn";
+import Footer from "@components/Footer";
 import BookmarkItem from "@components/BookmarkItem";
 
 type Bookmark = {
@@ -85,35 +86,40 @@ const Home: NextPage = () => {
     bookmarksSearchResult.length > 0 ? bookmarksSearchResult : bookmarks;
 
   return (
-    <Container w={"100%"}>
-      <Text fontSize="6xl">Boomark.</Text>
-      <Text fontSize="2xl">
-        Simple tools to search your twitter's bookmarks
-      </Text>
-      <Text fontSize="2xl">
-        This app will only be able to read your bookmarks.
-      </Text>
-      <LoginBtn onClick={() => signIn("twitter")} />
-      {loading ? (
-        <Box display="flex" justifyContent="center">
-          <CircularProgress value={80} isIndeterminate />
-        </Box>
-      ) : (
-        <Box marginTop={4}>
-          {(bookmarksData || []).length > 0 && (
-            <>
-              <Input
-                placeholder="Search your bookmark"
-                onChange={handleSearch}
-              />
-              {(bookmarksData ?? []).map((bookmark: Bookmark) => (
-                <BookmarkItem key={bookmark.id} data={bookmark} />
-              ))}
-            </>
-          )}
-        </Box>
-      )}
-    </Container>
+    <>
+      <Container w={"100%"}>
+        <Text fontSize="6xl">Boomark.</Text>
+        <Text fontSize="2xl">
+          Simple tools to search your twitter's bookmarks
+        </Text>
+        <Text fontSize="2xl">
+          This app will only be able to read your bookmarks.
+        </Text>
+        <LoginBtn onClick={() => signIn("twitter")} />
+        {loading ? (
+          <Box display="flex" justifyContent="center">
+            <CircularProgress value={80} isIndeterminate />
+          </Box>
+        ) : (
+          <Box marginTop={4}>
+            {(bookmarksData || []).length > 0 && (
+              <>
+                <Input
+                  placeholder="Search your bookmark"
+                  onChange={handleSearch}
+                />
+                {(bookmarksData ?? []).map((bookmark: Bookmark) => (
+                  <BookmarkItem key={bookmark.id} data={bookmark} />
+                ))}
+              </>
+            )}
+          </Box>
+        )}
+      </Container>
+      <Container as="main" maxW="5xl" h="100%" pt={{ sm: "6rem", md: "8rem" }}>
+        <Footer />
+      </Container>
+    </>
   );
 };
 
