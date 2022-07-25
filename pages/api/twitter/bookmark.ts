@@ -10,9 +10,16 @@ type ResponseData = {
 type RawData = {
   data: Record<string, any>[];
   includes: {
-    users: Record<string, any>[];
+    users: ObjectUser[];
   };
   meta: Record<string, any>;
+};
+
+type ObjectUser = {
+  id: string;
+  name: string;
+  username: string;
+  profile_image_url: string;
 };
 
 type Params = {
@@ -43,11 +50,12 @@ export default async (
     meta: { next_token: "token" },
   };
 
+  const mapUser: Record<string, ObjectUser> = {};
+
   try {
     let i = 0;
     do {
       i++;
-      console.log("request:", i);
       if (i > 5) {
         break;
       }
@@ -75,6 +83,30 @@ export default async (
       ];
       out.meta = response.meta == null ? null : response.meta;
     } while (out.meta.next_token);
+
+    // insert map user
+    (out.includes.users || []).forEach((data: ObjectUser) => {
+      if (mapUser[data.id] == undefined) {
+        mapUser[data.id] = data;
+      }
+    });
+
+    // merge user data in twitter list
+    const newList = out.data.map((list) => {
+      const dataUser = mapUser[list["author_id"]];
+      if (!!dataUser) {
+        return {
+          ...list,
+          author_username: dataUser.username,
+          author_name: dataUser.name,
+          author_profile_image: dataUser.profile_image_url,
+        };
+      } else {
+        return list;
+      }
+    });
+
+    out.data = newList;
 
     return res.status(200).json({
       data: out,
